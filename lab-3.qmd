@@ -36,6 +36,7 @@ library(zoo)
 
 data <- read_csv('https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv')
 
+write_csv(data, "data/covid_data.csv")
 ```
 
 **Data Description:**
@@ -96,6 +97,7 @@ select(Date = date, County = county, Cases = cases) |>
 flextable() |>
 
 add_header_lines("Most Cumulative Cases")
+
 ```
 
 The table shows the five Colorado counties with the highest cumulative COVID-19 cases as of February 1, 2022. El Paso, Denver, Arapahoe, Adams, and Jefferson had the most confirmed cases
@@ -121,6 +123,8 @@ pop_url <- 'https://www2.census.gov/programs-surveys/popest/datasets/2020-2023/c
 
 # Read the population data
 pop <- read.csv(pop_url)
+
+write_csv(data, "data/pop.csv")
 
 
 ```
@@ -419,6 +423,8 @@ ggplot(meta) +
 ```
 
 The COVID-19 weighted mean center was initially concentrated in the Northeast, where early outbreaks in New York and New Jersey fueled a surge in cases. Over time, it gradually shifted west and south, reflecting the spread of the virus into the Midwest and Southern states. This movement was influenced by population density, travel patterns, and changing public health policies. As the pandemic evolved, major waves like Delta and Omicron caused rapid shifts, highlighting how different regions experienced surges at different times.
+
+# **Question 8: Cases vs. Deaths**
 
 ```{r}
 library(tidyverse)
