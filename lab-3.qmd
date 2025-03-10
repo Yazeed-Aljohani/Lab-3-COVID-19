@@ -390,25 +390,25 @@ library(tidyverse)
 library(ggplot2)
 library(maps)
 
-# Step 1: Read in county centroid data and join with COVID-19 data
-covid_geo <- read_csv('https://raw.githubusercontent.com/mikejohnson51/csu-ess-330/refs/heads/main/resources/county-centroids.csv') |>
-  inner_join(data, by = "fips")  # Join on FIPS code
 
-# Step 2: Compute Weighted Mean Center
+covid_geo <- read_csv('https://raw.githubusercontent.com/mikejohnson51/csu-ess-330/refs/heads/main/resources/county-centroids.csv') |>
+  inner_join(data, by = "fips") 
+
+
 meta <- covid_geo |>
   group_by(date) |>
   summarise(
-    wmX_c = sum(LON * cases, na.rm = TRUE) / sum(cases, na.rm = TRUE),  # Weighted Longitude
-    wmY_c = sum(LAT * cases, na.rm = TRUE) / sum(cases, na.rm = TRUE),  # Weighted Latitude
-    cases = sum(cases, na.rm = TRUE)  # Total cases per day
+    wmX_c = sum(LON * cases, na.rm = TRUE) / sum(cases, na.rm = TRUE),  
+    wmY_c = sum(LAT * cases, na.rm = TRUE) / sum(cases, na.rm = TRUE),  
+    cases = sum(cases, na.rm = TRUE)  
   ) |>
   arrange(date) |>
-  mutate(d = row_number())  # Add an index column for ordering
+  mutate(d = row_number())  
 
-# Step 3: Plot the Weighted Mean Center Over Time
+
 ggplot(meta) +
-  borders("state", fill = "gray90", colour = "white") +  # Add state borders
-  geom_point(aes(x = wmX_c, y = wmY_c, size = cases), color = "red", alpha = 0.5) +  # Plot weighted centers
+  borders("state", fill = "gray90", colour = "white") +  
+  geom_point(aes(x = wmX_c, y = wmY_c, size = cases), color = "red", alpha = 0.5) +  
   theme_linedraw() +
   labs(
     color = "Time",
@@ -417,7 +417,7 @@ ggplot(meta) +
     y = "Latitude",
     title = "Weighted Center of COVID-19 Cases in the USA"
   ) +
-  theme(legend.position = "right")  # Show legend for size
+  theme(legend.position = "right")  
 
 ```
 
@@ -430,22 +430,22 @@ library(tidyverse)
 library(ggplot2)
 library(patchwork)
 
-# Load county centroid data and merge with COVID data
+
 meta <- read_csv('https://raw.githubusercontent.com/mikejohnson51/csu-ess-330/refs/heads/main/resources/county-centroids.csv') %>%
   inner_join(data, by = "fips") %>%
   group_by(date) %>%
   summarise(
-    wmx_c = sum(LON * cases, na.rm = TRUE) / sum(cases, na.rm = TRUE),  # Weighted mean X for cases
-    WMY_c = sum(LAT * cases, na.rm = TRUE) / sum(cases, na.rm = TRUE),  # Weighted mean Y for cases
-    cases = sum(cases, na.rm = TRUE),  # Total cases
-    wmx_d = sum(LON * deaths, na.rm = TRUE) / sum(deaths, na.rm = TRUE),  # Weighted mean X for deaths
-    WMY_d = sum(LAT * deaths, na.rm = TRUE) / sum(deaths, na.rm = TRUE),  # Weighted mean Y for deaths
-    deaths = sum(deaths, na.rm = TRUE)  # Total deaths
+    wmx_c = sum(LON * cases, na.rm = TRUE) / sum(cases, na.rm = TRUE),  
+    WMY_c = sum(LAT * cases, na.rm = TRUE) / sum(cases, na.rm = TRUE),  
+    cases = sum(cases, na.rm = TRUE),  
+    wmx_d = sum(LON * deaths, na.rm = TRUE) / sum(deaths, na.rm = TRUE),  
+    WMY_d = sum(LAT * deaths, na.rm = TRUE) / sum(deaths, na.rm = TRUE), 
+    deaths = sum(deaths, na.rm = TRUE)  
   ) %>%
   arrange(date) %>%
-  mutate(d = row_number())  # Add index for ordering
+  mutate(d = row_number())  
 
-# Plot Weighted Mean Center for Cases
+
 p1 <- ggplot(meta) +
   borders("state", fill = "gray98", colour = "white") +
   geom_point(aes(x = wmx_c, y = WMY_c, size = cases), color = "red", alpha = 0.25) +
@@ -459,7 +459,6 @@ p1 <- ggplot(meta) +
   ) +
   theme(legend.position = "right")
 
-# Plot Weighted Mean Center for Deaths
 p2 <- ggplot(meta) +
   borders("state", fill = "gray98", colour = "white") +
   geom_point(aes(x = wmx_d, y = WMY_d, size = deaths), color = "navy", alpha = 0.25) +
@@ -473,7 +472,7 @@ p2 <- ggplot(meta) +
   ) +
   theme(legend.position = "right")
 
-# Combine both plots side by side
+
 p1 + p2
 
 ```
