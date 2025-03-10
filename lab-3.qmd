@@ -1,5 +1,5 @@
 ---
-title: "Lab 02: COVID-19 Data Wrangling and Visualization"
+title: "Lab 03: COVID-19 Data Wrangling and Visualization"
 author: "Yazeed Aljohani"
 subtitle: "Data Wrangling and Visualization in R"
 date: "`r Sys.Date()`"
